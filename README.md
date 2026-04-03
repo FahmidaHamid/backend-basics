@@ -102,6 +102,71 @@ npm init -y
 npm install express
 ```
 
+5. Write your Server Application Code inside the index.js file:
+
+```javascript
+// basic crud api
+const express = require("express");
+const app = express();
+app.use(express.json()); // middleware, help parse json data
+
+const port = process.env.PORT || 3000; // use local port 3000 or any other port set by your environment
+
+app.listen(port, () => console.log(`Listening on port: ${port}`));
+```
+
+- Save it and run by using the following command (terminal):
+
+```javascript
+node index.js
+```
+
+- You should notice something like the following:
+
+```javascript
+backend-basics % node index.js
+Listening on port: 3000
+...
+```
+
+6. Install nodemon:
+
+- Install `nodemon` using the command `npm install -g nodemon` to automatically restart your Node.js application whenever you save changes to your code.
+- This saves you from having to manually stop and restart the server every time you make an update.
+
+```javascript
+npm install -g nodemon
+```
+
+5. Kill the current server (close the terminal) and restart it with nodemon.
+
+```javascript
+backend-basics % nodemon index.js
+[nodemon] 3.1.14
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,cjs,json
+[nodemon] starting `node index.js`
+Listening on port: 3000
+```
+
+6. Now, add the following lines of code before `app.listen(....)` in your `index.js` file:
+
+```javascript
+app.get("/", async (req, res) => {
+  res.send("Backend Basics...");
+});
+```
+
+- Open `http://localhost:3000/` and your should see the following message there.
+
+```javascript
+Backend Basics...
+```
+
+- So, we have our express server running with the first GET API on the root route ('/').
+
+
 ## Useful Links:
 
 - https://nodejs.org/en
