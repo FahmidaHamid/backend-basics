@@ -1,6 +1,5 @@
 // basic crud api
 const express = require("express");
-const { validateCourse } = require("./validations");
 const app = express();
 app.use(express.json()); // middleware, help parse json data
 
