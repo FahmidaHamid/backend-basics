@@ -42,6 +42,37 @@ Express.js is a widely-used, minimalist web application framework for Node.js
   - Keep requests stateless (each request contains all needed information)
   - Return data in a standard format, usually JSON
 
+- In modern web applications—such as the React/Firebase projects—REST APIs are often used so the frontend can communicate with a backend server or database.
+
+#### Common REST API Responses
+
+- With REST APIs, a client requests a resource; the server responds to the client with a representation of the current state of that resource and all relevant information about it in a standardized format, such as JSON or XML.
+
+- There is also an appropriate HTTP status code sent back in the response header to let the client know if the operation was successful or not.
+
+- Some common responses are:
+
+Common HTTP status codes used in REST API responses are grouped by category:
+
+- 2xx – Success: These indicate the request worked.
+  - 200 OK – Request succeeded and data is returned
+  - 201 Created – A new resource was successfully created
+  - 204 No Content – Request succeeded but there is no response bo
+
+- 4xx – Client Errors: These mean something is wrong with the request.
+  - 400 Bad Request – The request is invalid or missing data
+  - 401 Unauthorized – User is not authenticated
+  - 403 Forbidden – User is authenticated but not allowed to perform the action
+  - 404 Not Found – Requested resource does not exist
+  - 405 Method Not Allowed – The HTTP method is not allowed for this endpoint
+  - 409 Conflict – The request conflicts with existing data
+  - 422 Unprocessable Entity – The request format is correct, but validation failed
+
+* 5xx – Server Errors: These mean the server failed while processing a valid request.
+  - 500 Internal Server Error – General server-side error
+  - 502 Bad Gateway – Server received an invalid response from another server
+  - 503 Service Unavailable – Server is temporarily unavailable or overloaded
+
 ## What do we mean by CRUD API?
 
 ## Useful Links:
