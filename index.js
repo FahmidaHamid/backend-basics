@@ -1,5 +1,6 @@
 // basic crud api
 const express = require("express");
+const { validateCourse } = require("./validations");
 const app = express();
 app.use(express.json()); // middleware, help parse json data
 
@@ -36,13 +37,23 @@ app.get("/api/courses/:id", async (req, res) => {
 });
 
 app.post("/api/courses", async (req, res) => {
-  const newCourse = {
-    id: courses.length + 1,
+  const userInput = {
     name: req.body.name,
     enrollment: req.body.enrollment,
   };
-  courses.push(newCourse);
-  return res.send(newCourse); //convention
+  const { error, value } = validateCourse(userInput);
+
+  if (error) {
+    return res.status(400).send(error.message);
+  } else {
+    const newCourse = {
+      id: courses.length + 1,
+      name: req.body.name,
+      enrollment: req.body.enrollment,
+    };
+    courses.push(newCourse);
+    return res.send(newCourse); //convention
+  }
 });
 
 app.get("/", async (req, res) => {

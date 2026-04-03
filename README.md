@@ -303,6 +303,133 @@ app.post("/api/courses", async (req, res) => {
 ];
 ```
 
+11. User Input Validation
+
+- We should not let user input directly enter in our database before checking/validating it.
+  - Some validation could be: name cannot be empty, enrollment cannot be negative, etc.
+- So, we may add some conditions to the `post` method and if the input passes the conditions, only then we let in add to the database.
+
+```javascript
+if (!req.body.name || req.body.name.length < 3) {
+  //bad request
+  return res
+    .status(400)
+    .send("Name is required and it must be at least 3 characters long.");
+}
+
+if (!req.body.enrollment || parseInt(req.body.enrollment) < 0) {
+  //bad request
+  return res
+    .status(400)
+    .send("Enrollment is required and it must be 0 or positive.");
+}
+// before newCourse ....
+```
+
+- Now we can test it on Postman using various test cases like the followings:
+
+```javascript
+{
+    "name": "",
+    "enrollment": 100
+}
+ // response: 400 Bad Request, Name is required and it must be at least 3 characters long.
+
+ {
+    "name": "Java",
+    "enrollment": -100
+}
+// response: 400 Bad Request, Enrollment is required and it must be 0 or positive.
+```
+
+12. User Input Validation with **Joi**:
+
+- Instead of writing several conditions inside the post (and similar other methods), we can get help from various third-party libraries. We use one of those here, 'joi'.
+- Joi is a powerful schema description language and data validator for JavaScript.
+- install: `npm install joi`
+- url: https://www.npmjs.com/package/joi
+- You should check the documentaion of joi to learn more ...
+- To make our code more structured and reusable, I will do the following:
+
+```javascript
+// create a new file called 'validations.js' in the same directory
+// and put the following block of code
+
+const Joi = require("joi");
+// joi returns a class, and we use pascal naming conventions for a class
+// hence, its called/named as Joi
+
+//joi schema
+const courseSchema = Joi.object({
+  name: Joi.string().min(3).max(15).required(),
+  enrollment: Joi.number().positive().required(),
+});
+
+const validateCourse = (userInput) => {
+  return courseSchema.validate(userInput);
+};
+
+module.exports = { validateCourse }; // Export as an object
+```
+
+- Now I will import the `validateCourse` function in the `index.js` file using the following command:
+
+```javascript
+// usually we put these commands at the top of file
+const { validateCourse } = require("./validations");
+```
+
+- Then we will remove the `if-else` from the `api.post(...)` and update it like the following:
+
+```javascript
+app.post("/api/courses", async (req, res) => {
+  const userInput = {
+    name: req.body.name,
+    enrollment: req.body.enrollment,
+  };
+  const { error, value } = validateCourse(userInput);
+
+  if (error) {
+    return res.status(400).send(error.message);
+  } else {
+    const newCourse = {
+      id: courses.length + 1,
+      name: req.body.name,
+      enrollment: req.body.enrollment,
+    };
+    courses.push(newCourse);
+    return res.send(newCourse); //convention
+  }
+});
+```
+
+- If the nodemon is running properly, we should test the get and post methods once again with varius inputs (valid and invalid).
+
+13. Now, I want you to create two more APIs (one for put and one for delete).
+
+- make sure you use validation as necessary before putting (updating) or deleting (send appropriate message if the data doesn't exist)
+
+- Show your work before leaving.
+
+```javascript
+app.put("/api/courses/:id", async (req, res) => {
+  //step 1 -> look up the course, if not found return 404, resource not found
+  //step2: validate and return 400 if the input is not in good shape
+  // step3: if no error, then update the course and return the updated course in the response with proper status
+});
+
+app.delete("/api/courses/:id", async (req, res) => {
+  // look up the course
+  // if it doesn't exist, return 404
+  // otherwise delete and return appropriate message
+});
+```
+
+# Points: 20 [individual submission]
+
+-  Save your work in a github repo and share the link with me.
+-  I will only check the code this time.
+
 ## Useful Links:
 
 - https://nodejs.org/en
