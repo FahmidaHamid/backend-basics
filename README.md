@@ -218,11 +218,11 @@ app.get("/api/courses", async (req, res) => {
 - Now visit "http://localhost:3000/api/courses" on your browser and you should be able to see all the courses.
 - Note:
   - `app.get(...)` tells `Express.js` to listen for HTTP GET requests.
-  - "/api/courses" is the route path. When someone visits that URL, this function runs.
+  - `/api/courses` is the route path. When someone visits that URL, this function runs.
   - `async (req, res) => { ... }` is the route handler.
-  - res.send(courses) sends the courses data back to the client.
+  - `res.send(courses)` sends the courses data back to the client.
 
-  - You can describe "/api/courses" as:
+  - You can describe `/api/courses` as:
     - a route
     - an API route
     - an endpoint
@@ -238,8 +238,70 @@ app.get("/api/courses/:id", async (req, res) => {
 });
 ```
 
-- Now test it with various routes like '/api/courses/1', '/api/courses/5', etc.
+- Now test it with various routes like `/api/courses/1`, `/api/courses/5`, etc.
 - Note: Both `.find()` and `parseInt()` are built into modern JavaScript and are available in Node.js.
+
+10. Create a new route to post a new data:
+
+```javascript
+app.post("/api/courses", async (req, res) => {
+  const newCourse = {
+    id: courses.length + 1,
+    name: req.body.name,
+    enrollment: req.body.enrollment,
+  };
+  courses.push(newCourse);
+  return res.send(newCourse); //convention
+});
+```
+
+- **How do we test it?**
+  - Open Postman.
+  - From File > New > HTTP, start a "GET" request with the route: `http://localhost:3000/api/courses/` and hopefully you will see all the courses returned in the response body with a 200 status.
+  - Now open another tab for "POST" method for the same route: `http://localhost:3000/api/courses/`. In this case, click the `Body`, pick `raw`, `JSON` and add the following in the Body:
+
+  ```javascript
+    {
+    "name": "Black Hawk",
+    "enrollment": 100
+    }
+  ```
+
+  - and hit **send**.
+  - hopefully you will get another `200` response with a following message:
+    ```javascript
+    {
+    "id": 4,
+    "name": "Black Hawk",
+    "enrollment": 100
+    }
+    ```
+  - Now, if you go back to your get tab and hit `send` again, you should see something like the following:
+
+```javascript
+[
+  {
+    id: 1,
+    name: "SWE",
+    enrollment: 20,
+  },
+  {
+    id: 2,
+    name: "FP",
+    enrollment: 10,
+  },
+  {
+    id: 3,
+    name: "Python",
+    enrollment: 30,
+  },
+  {
+    id: 4,
+    name: "Black Hawk",
+    enrollment: 100,
+  },
+];
+```
 
 ## Useful Links:
 

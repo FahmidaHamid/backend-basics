@@ -29,6 +29,22 @@ app.get("/api/courses", async (req, res) => {
   res.send(courses);
 });
 
+app.get("/api/courses/:id", async (req, res) => {
+  const course = courses.find((c) => c.id === parseInt(req.params.id));
+  if (!course) res.status(404).send("Course does not exist...");
+  else res.send(course);
+});
+
+app.post("/api/courses", async (req, res) => {
+  const newCourse = {
+    id: courses.length + 1,
+    name: req.body.name,
+    enrollment: req.body.enrollment,
+  };
+  courses.push(newCourse);
+  return res.send(newCourse); //convention
+});
+
 app.get("/", async (req, res) => {
   res.send("Backend Basics...");
 });
