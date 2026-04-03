@@ -426,7 +426,7 @@ app.post("/api/courses", async (req, res) => {
 
 - make sure you use validation as necessary before putting (updating) or deleting (send appropriate message if the data doesn't exist)
 
-- Show your work to the profe. before leaving the classroom.
+- Show your work to the prof. before leaving the classroom.
 
 ```javascript
 app.put("/api/courses/:id", async (req, res) => {
@@ -442,9 +442,9 @@ app.delete("/api/courses/:id", async (req, res) => {
 });
 ```
 
-# Points: 20 [individual submission]
+# Points: 20 [individual submission, Canvas]
 
-- Save your work in a github repo and share the link with me.
+- Save your work in a github repo and submit the link.
 - I will only check the code this time.
 
 ## Useful Links:
