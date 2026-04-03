@@ -81,36 +81,40 @@ Common HTTP status codes used in REST API responses are grouped by category:
 
 - We will build a basic CRUD API today.
 
-## ToDos:
+## To-Dos (Complete before leaving the class):
 
-1. Install Node.js and Postman
+**1.** Install `Node.js` and `Postman`
 
 - https://nodejs.org/en/download
 - https://www.postman.com/
 
-2. Create a project directory (say, BackendBasics) and then start it with your VS Code. You may create a file, like `index.js`.
+**2.** Create a project directory (say, BackendBasics) and then start it with your VS Code. You may create a file, like `index.js`.
 
-3. Initialize NPM inside the folder by running this command in your terminal:
+**3.** Initialize NPM inside the folder by running this command in your terminal:
 
 ```javascript
 npm init -y
 ```
 
-4. Install Express:
+**4.** Install Express.js:
 
 ```javascript
 npm install express
 ```
 
-5. Write your Server Application Code inside the index.js file:
+**5.** Write your **server application code** inside the `index.js` file:
 
 ```javascript
 // basic crud api
 const express = require("express");
-const app = express();
-app.use(express.json()); // middleware, help parse json data
 
-const port = process.env.PORT || 3000; // use local port 3000 or any other port set by your environment
+const app = express(); // app is your server
+
+app.use(express.json());
+// express.json() is a middleware, it helps parse json data
+
+const port = process.env.PORT || 3000;
+// use local port 3000 or any other port set by your environment
 
 app.listen(port, () => console.log(`Listening on port: ${port}`));
 ```
@@ -127,9 +131,10 @@ node index.js
 backend-basics % node index.js
 Listening on port: 3000
 ...
+//yahoo! you have your server running ...
 ```
 
-6. Install nodemon:
+**6.** Install `nodemon`:
 
 - Install `nodemon` using the command `npm install -g nodemon` to automatically restart your Node.js application whenever you save changes to your code.
 - This saves you from having to manually stop and restart the server every time you make an update.
@@ -138,7 +143,7 @@ Listening on port: 3000
 npm install -g nodemon
 ```
 
-5. Kill the current server (close the terminal) and restart it with nodemon.
+**7.** Kill the current server (close the terminal) and restart it with nodemon.
 
 ```javascript
 backend-basics % nodemon index.js
@@ -150,7 +155,7 @@ backend-basics % nodemon index.js
 Listening on port: 3000
 ```
 
-6. Now, add the following lines of code before `app.listen(....)` in your `index.js` file:
+**8.** Now, add the following lines of code before `app.listen(....)` in your `index.js` file:
 
 ```javascript
 app.get("/", async (req, res) => {
@@ -158,7 +163,7 @@ app.get("/", async (req, res) => {
 });
 ```
 
-- Open `http://localhost:3000/` and your should see the following message there.
+- Open `http://localhost:3000/` on your browser and your should see the following message there.
 
 ```javascript
 Backend Basics...
@@ -166,9 +171,8 @@ Backend Basics...
 
 - So, we have our express server running with the first GET API on the root route ('/').
 
-* Note:
-
-- The following is an **anonymous asynchronous arrow function** commonly used as **a route handler** in Express.js:
+- Note:
+  - The following is an **anonymous asynchronous arrow function** commonly used as **a route handler** in Express.js:
 
 ```javascript
 // also called the "call-back function"
@@ -182,7 +186,7 @@ async (req, res) => {
 - **res** stands for the HTTP response object. It is used to send a response back to the client.
 - **res.send("Backend Basics...")** sends the text "Backend Basics..." back to the browser or client.
 
-7. Declare a local object (later will move them to a database):
+**9.** Declare a local object (later will move them to a database):
 
 ```javascript
 // inside index.js
@@ -206,7 +210,7 @@ const courses = [
 ];
 ```
 
-8. Create a new route (endpoint) to get all the data (courses):
+**10.** Create a new route (endpoint) to get all the data (courses):
 
 ```javascript
 // in the same index.js file
@@ -216,6 +220,7 @@ app.get("/api/courses", async (req, res) => {
 ```
 
 - Now visit "http://localhost:3000/api/courses" on your browser and you should be able to see all the courses.
+
 - Note:
   - `app.get(...)` tells `Express.js` to listen for HTTP GET requests.
   - `/api/courses` is the route path. When someone visits that URL, this function runs.
@@ -228,7 +233,7 @@ app.get("/api/courses", async (req, res) => {
     - an endpoint
     - specifically, a GET endpoint for courses
 
-9. Create another route to get a specific data (example: only one course, say 1):
+**11.** Create another route to get a specific data (example: only one course, say a course with course id: 1):
 
 ```javascript
 app.get("/api/courses/:id", async (req, res) => {
@@ -239,9 +244,10 @@ app.get("/api/courses/:id", async (req, res) => {
 ```
 
 - Now test it with various routes like `/api/courses/1`, `/api/courses/5`, etc.
+
 - Note: Both `.find()` and `parseInt()` are built into modern JavaScript and are available in Node.js.
 
-10. Create a new route to post a new data:
+**12.** Create a new route to handle post operation (adding new data):
 
 ```javascript
 app.post("/api/courses", async (req, res) => {
@@ -250,14 +256,16 @@ app.post("/api/courses", async (req, res) => {
     name: req.body.name,
     enrollment: req.body.enrollment,
   };
-  courses.push(newCourse);
+  courses.push(newCourse); // add newCourse to the existing courses
   return res.send(newCourse); //convention
 });
 ```
 
 - **How do we test it?**
   - Open Postman.
+
   - From File > New > HTTP, start a "GET" request with the route: `http://localhost:3000/api/courses/` and hopefully you will see all the courses returned in the response body with a 200 status.
+
   - Now open another tab for "POST" method for the same route: `http://localhost:3000/api/courses/`. In this case, click the `Body`, pick `raw`, `JSON` and add the following in the Body:
 
   ```javascript
@@ -269,6 +277,7 @@ app.post("/api/courses", async (req, res) => {
 
   - and hit **send**.
   - hopefully you will get another `200` response with a following message:
+
     ```javascript
     {
     "id": 4,
@@ -276,6 +285,7 @@ app.post("/api/courses", async (req, res) => {
     "enrollment": 100
     }
     ```
+
   - Now, if you go back to your get tab and hit `send` again, you should see something like the following:
 
 ```javascript
@@ -303,7 +313,7 @@ app.post("/api/courses", async (req, res) => {
 ];
 ```
 
-11. User Input Validation
+**13.** User Input Validation
 
 - We should not let user input directly enter in our database before checking/validating it.
   - Some validation could be: name cannot be empty, enrollment cannot be negative, etc.
@@ -342,13 +352,18 @@ if (!req.body.enrollment || parseInt(req.body.enrollment) < 0) {
 // response: 400 Bad Request, Enrollment is required and it must be 0 or positive.
 ```
 
-12. User Input Validation with **Joi**:
+**14.** User Input Validation with **joi**:
 
 - Instead of writing several conditions inside the post (and similar other methods), we can get help from various third-party libraries. We use one of those here, 'joi'.
-- Joi is a powerful schema description language and data validator for JavaScript.
+
+- joi is a powerful schema description language and data validator for JavaScript.
+
 - install: `npm install joi`
+
 - url: https://www.npmjs.com/package/joi
+
 - You should check the documentaion of joi to learn more ...
+
 - To make our code more structured and reusable, I will do the following:
 
 ```javascript
@@ -367,12 +382,14 @@ const courseSchema = Joi.object({
 
 const validateCourse = (userInput) => {
   return courseSchema.validate(userInput);
+  // return the object returned by the validate function
+  // (the validate function is defined in Joi)
 };
 
-module.exports = { validateCourse }; // Export as an object
+module.exports = { validateCourse };
 ```
 
-- Now I will import the `validateCourse` function in the `index.js` file using the following command:
+- Now we will import the `validateCourse` function in the `index.js` file using the following command:
 
 ```javascript
 // usually we put these commands at the top of file
@@ -397,23 +414,23 @@ app.post("/api/courses", async (req, res) => {
       name: req.body.name,
       enrollment: req.body.enrollment,
     };
-    courses.push(newCourse);
-    return res.send(newCourse); //convention
+    courses.push(newCourse); // add to the course list
+    return res.send(newCourse); //convention, return the new object
   }
 });
 ```
 
 - If the nodemon is running properly, we should test the get and post methods once again with varius inputs (valid and invalid).
 
-13. Now, I want you to create two more APIs (one for put and one for delete).
+**15.** Create two more APIs (one for `put` and one for `delete`).
 
 - make sure you use validation as necessary before putting (updating) or deleting (send appropriate message if the data doesn't exist)
 
-- Show your work before leaving.
+- Show your work to the profe. before leaving the classroom.
 
 ```javascript
 app.put("/api/courses/:id", async (req, res) => {
-  //step 1 -> look up the course, if not found return 404, resource not found
+  //step 1: look up the course, if not found return 404, resource not found
   //step2: validate and return 400 if the input is not in good shape
   // step3: if no error, then update the course and return the updated course in the response with proper status
 });
@@ -427,8 +444,8 @@ app.delete("/api/courses/:id", async (req, res) => {
 
 # Points: 20 [individual submission]
 
--  Save your work in a github repo and share the link with me.
--  I will only check the code this time.
+- Save your work in a github repo and share the link with me.
+- I will only check the code this time.
 
 ## Useful Links:
 
